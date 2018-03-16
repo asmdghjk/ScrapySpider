@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os,sys
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, 'SpiderMan'))
+
 # Scrapy settings for SpiderMan project
 #
 # For simplicity, this file contains only settings considered important or
@@ -19,7 +23,7 @@ NEWSPIDER_MODULE = 'SpiderMan.spiders'
 #USER_AGENT = 'SpiderMan (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -88,3 +92,4 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
