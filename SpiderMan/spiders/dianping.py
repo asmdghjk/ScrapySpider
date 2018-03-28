@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 import json,os
+
 import scrapy
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
+from selenium import webdriver
+
 from items import DianpingItemLoader, DianpingItem
 
 
@@ -8,12 +13,39 @@ class DianpingSpider(scrapy.Spider):
     name = 'dianping'
     allowed_domains = ['m.dianping.com']
     start_urls = ['https://m.dianping.com/']
+
+    def __init__(self):
+        # from pyvirtualdisplay import Display
+        # display = Display(visible=0, size=(1024,768))
+        # display.start()
+
+        # 设置chromedriver不加载图片
+        chrome_opt = webdriver.ChromeOptions()
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        chrome_opt.add_experimental_option("prefs", prefs)
+        driver_path = os.path.join(os.path.abspath('./SpiderMan/tools'), 'chromedriver.exe')
+        print(driver_path)
+        self.browser = webdriver.Chrome(executable_path=driver_path, chrome_options=chrome_opt)
+        super(DianpingSpider, self).__init__()
+        dispatcher.connect(self.spider_closed, signals.spider_closed)
+
+    def spider_closed(self, spider):
+        #当爬虫退出的时候关闭chrome
+        print ("spider closed")
+        self.browser.quit()
+
     custom_settings = {
-        'ITEM_PIPELINES' : {
-            'SpiderMan.pipelines.ImagePipeline': 1,
-            # 'SpiderMan.pipelines.TestPipeline': 100,
-            'SpiderMan.pipelines.JsonWithEncodingPipeline': 2,
+        'DOWNLOADER_MIDDLEWARES': {
+            'SpiderMan.middlewares.JSPageMiddleware': 1
+            # 'SpiderMan.middlewares.SpidermanSpiderMiddleware': 543,
         },
+
+        'ITEM_PIPELINES' : {
+            # 'SpiderMan.pipelines.ImagePipeline': 1,
+            # 'SpiderMan.pipelines.TestPipeline': 100,
+            'SpiderMan.pipelines.CsvWithEncodingPipeline': 2,
+        },
+
         'MIN_WIDTH' : 100,
         'MIN_HEIGHT' : 100,
         'IMAGES_URLS_FIELD' : "imageURL",

@@ -56,3 +56,19 @@ class SpidermanSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
+import time,os
+from scrapy.http import HtmlResponse
+
+
+class JSPageMiddleware(object):
+
+    #selenium方式
+    def process_request(self, request, spider):
+        if spider.name == "dianping":
+            spider.browser.get(request.url)
+            time.sleep(2)
+            print("访问：{0}".format(request.url))
+            print(spider.browser.page_source)
+            return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source, encoding="utf-8", request=request)
+
+

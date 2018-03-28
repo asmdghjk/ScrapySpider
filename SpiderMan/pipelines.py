@@ -36,10 +36,10 @@ class CsvWithEncodingPipeline(object):
         self.file.write('shopId,cityId,city,fullName,categoryId,categoryName,position,latitude,longitude,address,shopPower,avgPrice,phoneNo,shopId,isOversea,introduce,roomNums,hotelFloors,openningTime,decoDate,checkInTime,checkOutTime,shopId,scoreText,reviewAbstractText,reviewCount,imageURL')
 
     def process_item(self, item, spider):
-        lines = 'shopId', item['cityId', item['city', item['fullName', item['categoryId', item['categoryName', item['position', item['latitude',
-                          item['longitude', item['address', item['shopPower', item['avgPrice', item['phoneNo', item['shopId', item['isOversea',
-                          item['introduce', item['roomNums', item['hotelFloors', item['openningTime', item['decoDate', item['checkInTime',
-                          item['checkOutTime', item['shopId', item['scoreText', item['reviewAbstractText', item['reviewCount', item['imageURL' + "\n"
+        lines = 'shopId' + item['cityId'] + item['city'] + item['fullName'] + item['categoryId'] + item['categoryName'] + item['position'] + item['latitude'],\
+                     + item['longitude'] + item['address'] + item['shopPower'] + item['avgPrice'] + item['phoneNo'] + item['shopId'] + item['isOversea'],\
+                     + item['introduce'] + item['roomNums'] + item['hotelFloors'] + item['openningTime'] + item['decoDate'] + item['checkInTime'],\
+                     + item['checkOutTime'] + item['shopId'] + item['scoreText'] + item['reviewAbstractText'] + item['reviewCount'] + item['imageURL'] + '\n'
         self.file.write(lines)
         return item
 
